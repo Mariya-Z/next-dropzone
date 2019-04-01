@@ -48,22 +48,3 @@ $white: #fff;
     outline: -webkit-focus-ring-color auto 5px;
   }
 }
-
-.dropzone2 {
-  min-width: 400px;
-  min-height: 200px;
-  display: table;
-  width: 100%;
-  background-color: #eee;
-  border: 1px dotted #aaa;
-}
-
-.text-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.centered {
-  font-weight: bold;
-  text-align: center;
-}
