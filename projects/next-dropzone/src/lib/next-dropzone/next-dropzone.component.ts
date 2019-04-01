@@ -24,14 +24,17 @@ export class NextDropzoneComponent {
 
   @ViewChild('input') public inputFile: ElementRef;
 
-  public fileToUpload: File = null;
+  public fileToUpload: File = new File([],'',{});
 
   public handleFileInput(file: FileList) {
     this.fileToUpload = file.item(0);
   }
 
   public onClick(): void {
-    this.inputFile.nativeElement.checked();
+    // this.inputFile.nativeElement.checked();
+    document.getElementById('file')
+    console.log(document.getElementById('file'));
   }
+
 
 }

@@ -20,18 +20,23 @@ $white: #fff;
   min-width: 400px;
   min-height: 200px;
   width: 100%;
-  border: 1px dashed $gray;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
+
 
   &__content {
-    vertical-align: middle;
+    border: 1px dashed $gray;
+    border-radius: 4px;
+    min-height: 200px;
+    display: flex;
+    margin: 3px 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
   }
 
   .input + &__label {
     padding: 10px 15px;
+    margin: 5px;
     border-radius: 2px;
     background-color: #0460a9;
     color: $white;
