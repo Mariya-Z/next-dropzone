@@ -1,0 +1,50 @@
+$gray: #9d9d9d;
+$blue: #0460a9;
+$dark-blue: #023761;
+$white: #fff;
+
+.cdk-visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  text-transform: none;
+  width: 1px;
+  bottom: 0;
+  left: 0;
+}
+
+.dropzone {
+  min-width: 400px;
+  min-height: 200px;
+  width: 100%;
+  border: 1px dashed $gray;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+
+  &__content {
+    vertical-align: middle;
+  }
+
+  .input + &__label {
+    padding: 10px 15px;
+    border-radius: 2px;
+    background-color: #0460a9;
+    color: $white;
+    cursor: pointer;
+  }
+
+  .input:focus + &__label,
+  .input + &__label:hover {
+    background-color: $dark-blue;
+  }
+
+  .input:focus + &__label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+  }
+}

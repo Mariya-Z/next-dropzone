@@ -116,6 +116,36 @@
           }
         }
       }
+    },
+    "next-dropzone": {
+      "root": "projects/next-dropzone",
+      "sourceRoot": "projects/next-dropzone/src",
+      "projectType": "library",
+      "prefix": "next",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/next-dropzone/tsconfig.lib.json",
+            "project": "projects/next-dropzone/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/next-dropzone/src/test.ts",
+            "tsConfig": "projects/next-dropzone/tsconfig.spec.json",
+            "karmaConfig": "projects/next-dropzone/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["projects/next-dropzone/tsconfig.lib.json", "projects/next-dropzone/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
     }
   },
   "defaultProject": "next-dropzone-lib-app"
