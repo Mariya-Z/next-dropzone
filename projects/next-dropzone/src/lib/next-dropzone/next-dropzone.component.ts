@@ -6,25 +6,31 @@ import {Component, Input, HostBinding, Output, EventEmitter, ViewChild, ElementR
   styleUrls: ['./next-dropzone.component.scss'],
 })
 export class NextDropzoneComponent {
-  public _uniqueId: string;
 
-  @Input() public id: string = this._uniqueId;
-  @Input() public multiple = false;
-  @Input() public accept = '*.*';
+  // These lines will be added (or removed in future commits)
+  // public _uniqueId: string;
 
-  @HostBinding('class.disabled')
-  @Input() public disabled = false;
+  // @Input() public id: string = this._uniqueId;
+  // @Input() public multiple = false;
+  // @Input() public accept = '*.*';
 
-  @HostBinding()
-  @Input() public tabindex = 0;
+  // @HostBinding('class.disabled')
+  // @Input() public disabled = false;
 
-  @Output() public filesSelected = new EventEmitter<File[]>();
+  // @HostBinding()
+  // @Input() public tabindex = 0;
+
+  // @Output() public filesSelected = new EventEmitter<File[]>();
 
   @ViewChild('input') public inputFile: ElementRef;
 
+  public fileToUpload: File = null;
+
+  public handleFileInput(file: FileList) {
+    this.fileToUpload = file.item(0);
+  }
+
   public onClick(): void {
-    console.log(this.inputFile);
-    // this.inputFile.click();
     this.inputFile.nativeElement.checked();
   }
 

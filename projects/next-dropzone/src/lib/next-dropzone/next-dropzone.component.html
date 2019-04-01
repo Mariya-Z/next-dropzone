@@ -1,16 +1,13 @@
-<article class="dropzone">
-  <p class="dropzone__info">
-    <!-- <button></button>  -->
+<article class="dropzone" nextDropzone>
+  <p class="dropzone__content">
     <input 
       type="file"
       class="input cdk-visually-hidden"
-      id="file" 
+      id="file"
+      (change)="handleFileInput($event.targat.files)" 
     />
-    <!-- style="display: none" file-handler -->
     <label for="file" class="dropzone__label">
       Select</label>
-
     or drop file here to upload
   </p>
-  <!-- <input type='file' /> -->
 </article>

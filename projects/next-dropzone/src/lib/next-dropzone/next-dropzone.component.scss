@@ -14,11 +14,21 @@ $white: #fff;
   width: 1px;
   bottom: 0;
   left: 0;
-  // margin-left: 33%;
 }
 
 .dropzone {
-  border: 2px dashed $gray;
+  min-width: 400px;
+  min-height: 200px;
+  width: 100%;
+  border: 1px dashed $gray;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+
+  &__content {
+    vertical-align: middle;
+  }
 
   .input + &__label {
     padding: 10px 15px;
@@ -37,4 +47,23 @@ $white: #fff;
     outline: 1px dotted #000;
     outline: -webkit-focus-ring-color auto 5px;
   }
+}
+
+.dropzone2 {
+  min-width: 400px;
+  min-height: 200px;
+  display: table;
+  width: 100%;
+  background-color: #eee;
+  border: 1px dotted #aaa;
+}
+
+.text-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.centered {
+  font-weight: bold;
+  text-align: center;
 }
