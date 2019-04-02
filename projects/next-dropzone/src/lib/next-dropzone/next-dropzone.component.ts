@@ -1,4 +1,6 @@
-import {Component, Input, HostBinding, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
+import {Component, Input, HostBinding, Output, EventEmitter} from '@angular/core';
+
+let counter = 0;
 
 @Component({
   selector: 'next-dropzone',
@@ -6,32 +8,26 @@ import {Component, Input, HostBinding, Output, EventEmitter, ViewChild, ElementR
   styleUrls: ['./next-dropzone.component.scss'],
 })
 export class NextDropzoneComponent {
+  @Input() public id: string = `next-dropzone-${++counter}`;
+  @Input() public multiple = false;
+  @Input() public accept = '*.*';
 
-  // These lines will be added (or removed in future commits)
-  // public _uniqueId: string;
+  @HostBinding('class.disabled')
+  @Input()
+  public disabled = false;
 
-  // @Input() public id: string = this._uniqueId;
-  // @Input() public multiple = false;
-  // @Input() public accept = '*.*';
+  @HostBinding()
+  @Input()
+  public tabindex = 0;
 
-  // @HostBinding('class.disabled')
-  // @Input() public disabled = false;
+  @Output() public filesSelected = new EventEmitter<File[]>();
 
-  // @HostBinding()
-  // @Input() public tabindex = 0;
+  public fileToUpload: File[] = [];
 
-  // @Output() public filesSelected = new EventEmitter<File[]>();
-
-  @ViewChild('input') public inputFile: ElementRef;
-
-  public fileToUpload: File = null;
-
-  public handleFileInput(file: FileList) {
-    this.fileToUpload = file.item(0);
+  public handleFileInput(files: FileList) {
+    Array.from(files).forEach((element) => {
+      this.fileToUpload.push(element);
+    });
+    this.filesSelected.emit(this.fileToUpload);
   }
-
-  public onClick(): void {
-    this.inputFile.nativeElement.checked();
-  }
-
 }

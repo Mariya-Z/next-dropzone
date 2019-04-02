@@ -7,4 +7,8 @@ import {Component} from '@angular/core';
 })
 export class AppComponent {
   public title = 'next-dropzone-lib-app';
+
+  public onGetFiles(event): void {
+    console.log(event);
+  }
 }

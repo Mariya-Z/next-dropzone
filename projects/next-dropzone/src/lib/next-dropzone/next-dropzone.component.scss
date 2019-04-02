@@ -20,30 +20,35 @@ $white: #fff;
   min-width: 400px;
   min-height: 200px;
   width: 100%;
-  border: 1px dashed $gray;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
 
   &__content {
-    vertical-align: middle;
+    border: 1px dashed $gray;
+    border-radius: 4px;
+    min-height: 200px;
+    display: flex;
+    flex: 1;
+    margin: 5px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
   }
 
-  .input + &__label {
+  .input + &__button {
     padding: 10px 15px;
+    margin: 5px;
     border-radius: 2px;
     background-color: #0460a9;
     color: $white;
     cursor: pointer;
   }
 
-  .input:focus + &__label,
-  .input + &__label:hover {
+  .input:focus + &__button,
+  .input + &__button:hover {
     background-color: $dark-blue;
   }
 
-  .input:focus + &__label {
+  .input:focus + &__button {
     outline: 1px dotted #000;
     outline: -webkit-focus-ring-color auto 5px;
   }

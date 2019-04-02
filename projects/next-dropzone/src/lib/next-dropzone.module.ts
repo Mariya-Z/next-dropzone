@@ -4,7 +4,6 @@ import { NextDropzoneDirective } from './directive/next-dropzone.directive';
 
 @NgModule({
   declarations: [NextDropzoneComponent, NextDropzoneDirective],
-  imports: [],
-  exports: [NextDropzoneComponent],
+  exports: [NextDropzoneComponent, NextDropzoneDirective],
 })
 export class NextDropzoneModule {}
