@@ -4,15 +4,12 @@
       #input
       type="file"
       class="input cdk-visually-hidden"
-      id="file"
+      [id]="id"
+      [multiple]="multiple"
+      [accept]="accept"
       (change)="handleFileInput($event.target.files)"
     />
-    <label for="file" class="dropzone__label"> Select</label>
+    <label [for]="id" class="dropzone__button">Select</label>
     or drop file here to upload
   </section>
-
-  <input type="text" [value]="fileToUpload.name" />
 </article>
-
-<input type="file" />
-<button (click)="onClick()">btn</button>
