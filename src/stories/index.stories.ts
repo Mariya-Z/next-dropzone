@@ -1,47 +1,28 @@
-import {storiesOf} from '@storybook/angular';
-import {action} from '@storybook/addon-actions';
-import {linkTo} from '@storybook/addon-links';
+import {storiesOf, moduleMetadata} from '@storybook/angular';
 
-import {Welcome, Button} from '@storybook/angular/demo';
+import defaultText from './default.md';
 
-storiesOf('Welcome', module).add('to Storybook', () => ({
-  component: Welcome,
-  props: {},
-}));
+import {NextDropzoneComponent} from '../../projects/next-dropzone/src/public_api';
 
-storiesOf('Button', module)
-  .add('with text', () => ({
-    component: Button,
-    props: {
-      text: 'Hello Button',
-    },
-  }))
-  .add(
-    'with some emoji',
-    () => ({
-      component: Button,
-      props: {
-        text: '😀 😎 👍 💯',
-      },
+const styles = `
+  <style>
+  </style>
+`;
+
+storiesOf('Next file upload', module)
+  .addDecorator(
+    moduleMetadata({
+      declarations: [NextDropzoneComponent],
     }),
-    {notes: 'My notes on a button with emojis'},
   )
   .add(
-    'with some emoji and action',
+    'Install',
     () => ({
-      component: Button,
-      props: {
-        text: '😀 😎 👍 💯',
-        onClick: action('This was clicked OMG'),
-      },
+      template: `
+      <next-dropzone>
+      </next-dropzone>
+    `,
+      props: {},
     }),
-    {notes: 'My notes on a button with emojis'},
+    {notes: defaultText},
   );
-
-storiesOf('Another Button', module).add('button with link to another story', () => ({
-  component: Button,
-  props: {
-    text: 'Go to Welcome Story',
-    onClick: linkTo('Welcome'),
-  },
-}));
