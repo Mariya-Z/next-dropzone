@@ -5,11 +5,19 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build_lib": "ng build next-dropzone",
     "test": "ng test",
+    "test_lib": "ng test next-dropzone",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "npm_pack": "cd dist/next-dropzone && npm pack && cd ../..",
+    "npm_package": "npm run build_lib && npm run npm_pack && npm i file:dist/next-dropzone/next-dropzone-0.0.1.tgz --no-save",
+    "postinstall": "npm run npm_package",
+    "bump": "cd projects/next-dropzone && yarn version --patch",
+    "package": "yarn bump && yarn build_lid && yarn npm_pack",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "deploy-storybook": "storybook-to-ghpages"
   },
   "private": true,
   "dependencies": {
@@ -38,6 +46,7 @@
     "@storybook/addon-options": "^5.0.6",
     "@storybook/addon-viewport": "^5.0.6",
     "@storybook/angular": "^5.0.6",
+    "@storybook/storybook-deployer": "^2.8.1",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
