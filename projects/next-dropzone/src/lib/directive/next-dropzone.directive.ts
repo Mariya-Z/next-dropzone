@@ -1,4 +1,4 @@
-import {Directive, HostListener, HostBinding, Output, EventEmitter} from '@angular/core';
+import {Directive, HostListener, HostBinding, Output, EventEmitter, ElementRef} from '@angular/core';
 
 @Directive({
   selector: '[nextDropzone]',
@@ -13,11 +13,25 @@ export class NextDropzoneDirective {
 
   public fileToUpload: File[] = [];
 
-  @HostListener('window:dragenter', ['$event']) public onDrag(evt) {
+  constructor(private el: ElementRef) {}
+
+  @HostListener('window:dragenter', ['$event']) public onDragEnter(evt) {
     if (evt.dataTransfer.types[0] === 'Files') {
       this.border = '2px solid';
+      this.borderRadius = '4px';
       this.borderColor = '#0460a9';
     }
+  }
+
+  @HostListener('window:dragend', ['$event']) public onDragEnd(evt) {
+    // if (evt.dataTransfer.types[0] === 'Files') {
+      console.log('end');
+      evt.preventDefault();
+      evt.stopPropagation();
+      this.background = this.el.nativeElement.background;
+      this.border = this.el.nativeElement.border;
+      this.borderRadius = this.el.nativeElement.borderRadius;
+    // }
   }
 
   @HostListener('dragover', ['$event']) public onDragOver(evt) {
@@ -32,23 +46,27 @@ export class NextDropzoneDirective {
   }
 
   @HostListener('dragleave', ['$event']) public onDragLeave(evt) {
-    evt.preventDefault();
-    evt.stopPropagation();
-    this.background = '#fff';
-    this.borderColor = 'transparent';
+    if (evt.dataTransfer.types[0] === 'Files') {
+      evt.preventDefault();
+      evt.stopPropagation();
+      this.background = this.el.nativeElement.background;
+      this.border = this.el.nativeElement.border;
+    }
   }
 
   @HostListener('drop', ['$event']) public onDrop(evt) {
-    evt.preventDefault();
-    evt.stopPropagation();
-    this.background = '#fff';
-    this.borderColor = 'transparent';
-    const files = evt.dataTransfer.files;
-    if (files.length > 0) {
-      Array.from(files).forEach((element: File) => {
-        this.fileToUpload.push(element);
-      });
-      this.filesSelected.emit(this.fileToUpload);
-    }
+    // if (evt.dataTransfer.types[0] === 'Files') {
+      evt.preventDefault();
+      evt.stopPropagation();
+      this.background = this.el.nativeElement.background;
+      this.border = this.el.nativeElement.border;
+      const files = evt.dataTransfer.files;
+      if (files.length > 0) {
+        Array.from(files).forEach((element: File) => {
+          this.fileToUpload.push(element);
+        });
+        this.filesSelected.emit(this.fileToUpload);
+      }
+    // }
   }
 }

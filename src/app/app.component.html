@@ -1,14 +1,24 @@
 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex, incidunt.</p>
 
-<next-dropzone
+<!-- <next-dropzone
+    nextDropzone
     [id]="1"
     [disabled]="true"
     [tabIndex]="1"
     [multiple]='true'
     (filesSelected)="onGetFiles($event)"
-></next-dropzone>
+    class="a"
+></next-dropzone> -->
 
 <div nextDropzone (filesSelected)="onGetFiles($event)"
     class="zone">
     dropzone
 </div>
+
+<p></p>
+
+<div nextDropzone (filesSelected)="onGetFiles($event)"
+    class="zone a">
+    dropzone
+</div>
+
