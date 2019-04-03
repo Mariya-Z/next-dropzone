@@ -1,9 +1,9 @@
-import {Directive, HostListener, HostBinding, Output, EventEmitter, Renderer2, OnInit} from '@angular/core';
+import {Directive, HostListener, HostBinding, Output, EventEmitter} from '@angular/core';
 
 @Directive({
   selector: '[nextDropzone]',
 })
-export class NextDropzoneDirective implements OnInit {
+export class NextDropzoneDirective {
   @HostBinding('style.background') public background;
   @HostBinding('style.border') public border;
   @HostBinding('style.border-radius') public borderRadius;
@@ -13,38 +13,22 @@ export class NextDropzoneDirective implements OnInit {
 
   public fileToUpload: File[] = [];
 
-  constructor(private renderer: Renderer2) {
-    renderer.listen(window, 'drag', () => {
-      this.borderColor = 'orange';
-    });
-  }
-
-  public ngOnInit(): void {
-    this.renderer.listen(window, 'drag', () => {
-      // this.background = 'pink';
-      // this.borderColor = 'green';
-    });
-  }
-
-  @HostListener('window:keyup', ['$event']) public keyEvent(evt) {
-    console.log(evt);
-    this.background = 'red';
-  }
-
-  @HostListener('window:move', ['$event']) public onDrag(evt) {
-    console.log(evt);
-    this.background = 'red';
+  @HostListener('window:dragenter', ['$event']) public onDrag(evt) {
+    if (evt.dataTransfer.types[0] === 'Files') {
+      this.border = '2px solid';
+      this.borderColor = '#0460a9';
+    }
   }
 
   @HostListener('dragover', ['$event']) public onDragOver(evt) {
-    // if (evt.dataTransfer.types[0] === 'Files') {
+    if (evt.dataTransfer.types[0] === 'Files') {
       evt.preventDefault();
       evt.stopPropagation();
       this.border = '2px solid';
       this.borderRadius = '4px';
       this.background = 'rgba(82, 145, 221, 0.3)';
       this.borderColor = '#0460a9';
-    // }
+    }
   }
 
   @HostListener('dragleave', ['$event']) public onDragLeave(evt) {
