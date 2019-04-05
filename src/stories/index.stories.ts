@@ -25,4 +25,16 @@ storiesOf('Next file upload', module)
       props: {},
     }),
     {notes: defaultText},
-  );
+  )
+  .add('tadIndex', () => ({
+    template: `
+      <next-dropzone [tabindex]="2">
+      </next-dropzone>
+      <next-dropzone [tabindex]="1">
+      </next-dropzone>
+      <next-dropzone [tabindex]="4">
+      </next-dropzone>
+      <next-dropzone [tabindex]="3">
+      </next-dropzone>
+    `,
+  }));
