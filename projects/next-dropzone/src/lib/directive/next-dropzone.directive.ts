@@ -12,10 +12,14 @@ export class NextDropzoneDirective {
 
   public fileToUpload: File[] = [];
 
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef) {
+    // console.log(this.el.nativeElement);
+    // console.log(this.el.nativeElement);
+  }
 
   @HostListener('window:dragenter', ['$event']) public onDragEnter(evt) {
-    if (evt.dataTransfer.types[0] === 'Files') {
+    // && this.el.nativeElement.disabled
+    if (evt.dataTransfer.types[0] === 'Files' ) {
       this.el.nativeElement.style.display = 'block';
       this.border = '2px solid';
       this.borderRadius = '4px';
@@ -24,7 +28,7 @@ export class NextDropzoneDirective {
   }
 
   @HostListener('window:dragend', ['$event']) public onDragEnd(evt) {
-    if (evt.dataTransfer.types[0] === 'Files') {
+    if (evt.dataTransfer.types[0] === 'Files' && this.el.nativeElement.enabled) {
       evt.preventDefault();
       evt.stopPropagation();
       this.background = this.el.nativeElement.background;

@@ -12,9 +12,7 @@ export class NextDropzoneComponent {
   @Input() public multiple = false;
   @Input() public accept = '*.*';
 
-  @HostBinding('class.disabled')
-  @Input()
-  public disabled = false;
+  @HostBinding('class.disabled') @Input() public disabled = false;
 
   @HostBinding()
   @Input()
