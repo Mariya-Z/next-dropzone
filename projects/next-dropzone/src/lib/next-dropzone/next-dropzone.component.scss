@@ -20,7 +20,11 @@ $borderRadius: 4px;
   left: 0;
 }
 
-.dropzone {
+:host.disabled .uploadfile {
+  opacity: 0.5;
+}
+
+.uploadfile {
   min-width: 400px;
   min-height: 200px;
   width: 100%;
@@ -44,15 +48,18 @@ $borderRadius: 4px;
     border-radius: 2px;
     background-color: #0460a9;
     color: $white;
+  }
+
+  .input:enabled + &__button {
     cursor: pointer;
   }
 
-  .input:focus + &__button,
-  .input + &__button:hover {
+  .input:focus:enabled + &__button,
+  .input:enabled + &__button:hover {
     background-color: $dark-blue;
   }
 
-  .input:focus + &__button {
+  .input:focus:enabled + &__button {
     outline: 1px dotted #000;
     outline: -webkit-focus-ring-color auto 5px;
   }

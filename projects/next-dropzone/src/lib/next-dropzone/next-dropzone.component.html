@@ -1,5 +1,5 @@
-<article class="dropzone">
-  <section class="dropzone__content">
+<article class="uploadfile">
+  <section class="uploadfile__content">
     <input
       #input
       type="file"
@@ -7,9 +7,10 @@
       [id]="id"
       [multiple]="multiple"
       [accept]="accept"
+      [disabled]="disabled"
       (change)="handleFileInput($event.target.files)"
     />
-    <label [for]="id" class="dropzone__button">Select</label>
+    <label [for]="id" class="uploadfile__button">Select</label>
     or drop file here to upload
   </section>
 </article>

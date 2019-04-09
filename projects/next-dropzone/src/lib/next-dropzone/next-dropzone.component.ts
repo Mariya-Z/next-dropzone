@@ -12,13 +12,9 @@ export class NextDropzoneComponent {
   @Input() public multiple = false;
   @Input() public accept = '*.*';
 
-  @HostBinding('class.disabled')
-  @Input()
-  public disabled = false;
+  @HostBinding('class.disabled') @Input() public disabled = false;
 
-  @HostBinding()
-  @Input()
-  public tabindex = 0;
+  @HostBinding('tabindex') @Input() public tabindex = 0;
 
   @Output() public filesSelected = new EventEmitter<File[]>();
 
