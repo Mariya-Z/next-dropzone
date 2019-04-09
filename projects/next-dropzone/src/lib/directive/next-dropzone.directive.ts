@@ -16,15 +16,13 @@ export class NextDropzoneDirective {
   public fileToUpload: File[] = [];
   public enabled: boolean = true;
 
-  constructor(private el: ElementRef) {
-  }
+  constructor(private el: ElementRef) { }
 
   @HostListener('window:dragenter', ['$event']) public onDragEnter(evt) {
     const input = this.el.nativeElement.getElementsByClassName('input');
     if (input.length > 0) {
       this.enabled = !input[0].disabled;
     }
-    // && this.el.nativeElement.disabled
     if (evt.dataTransfer.types[0] === 'Files' && this.enabled) {
       this.el.nativeElement.style.display = 'block';
       this.border = '2px solid';
