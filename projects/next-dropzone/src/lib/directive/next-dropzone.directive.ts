@@ -1,5 +1,5 @@
 import {Directive, HostListener, HostBinding, Output, EventEmitter, ElementRef, ViewChild, Input} from '@angular/core';
-import { NextDropzoneComponent } from '../next-dropzone/next-dropzone.component';
+import {NextDropzoneComponent} from '../next-dropzone/next-dropzone.component';
 @Directive({
   selector: '[nextDropzone]',
 })
@@ -16,7 +16,7 @@ export class NextDropzoneDirective {
   public fileToUpload: File[] = [];
   public enabled: boolean = true;
 
-  constructor(private el: ElementRef) { }
+  constructor(private el: ElementRef) {}
 
   @HostListener('window:dragenter', ['$event']) public onDragEnter(evt) {
     const input = this.el.nativeElement.getElementsByClassName('input');
@@ -53,7 +53,7 @@ export class NextDropzoneDirective {
   }
 
   @HostListener('dragleave', ['$event']) public onDragLeave(evt) {
-    if (evt.dataTransfer.types[0] === 'Files'  && this.enabled) {
+    if (evt.dataTransfer.types[0] === 'Files' && this.enabled) {
       evt.preventDefault();
       evt.stopPropagation();
       this.background = this.el.nativeElement.background;
@@ -61,7 +61,7 @@ export class NextDropzoneDirective {
   }
 
   @HostListener('drop', ['$event']) public onDrop(evt) {
-    if (evt.dataTransfer.types[0] === 'Files'  && this.enabled) {
+    if (evt.dataTransfer.types[0] === 'Files' && this.enabled) {
       evt.preventDefault();
       evt.stopPropagation();
       this.background = this.el.nativeElement.background;
