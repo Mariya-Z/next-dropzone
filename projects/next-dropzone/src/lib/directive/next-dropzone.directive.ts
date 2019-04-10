@@ -1,9 +1,19 @@
-import {Directive, HostListener, HostBinding, Output, EventEmitter, ElementRef, ViewChild, Input} from '@angular/core';
-import {NextDropzoneComponent} from '../next-dropzone/next-dropzone.component';
+import {
+  Directive,
+  HostListener,
+  HostBinding,
+  Output,
+  EventEmitter,
+  ElementRef,
+  ViewChild,
+  Input,
+  DoCheck,
+} from '@angular/core';
+import {NextDragAndDropService} from '../services/next-drag-and-drop.service';
 @Directive({
   selector: '[nextDropzone]',
 })
-export class NextDropzoneDirective {
+export class NextDropzoneDirective implements DoCheck {
   @HostBinding('style.background') public background;
   @HostBinding('style.border') public border;
   @HostBinding('style.border-radius') public borderRadius;
@@ -16,27 +26,32 @@ export class NextDropzoneDirective {
   public fileToUpload: File[] = [];
   public enabled: boolean = true;
 
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef, private dragAndDrop: NextDragAndDropService) {}
+
+  public ngDoCheck(): void {
+    if (this.dragAndDrop.removeBorder) {
+      this.onDragEnd();
+    }
+  }
 
   @HostListener('window:dragenter', ['$event']) public onDragEnter(evt) {
+    this.dragAndDrop.removeBorder = false;
     const input = this.el.nativeElement.getElementsByClassName('input');
     if (input.length > 0) {
       this.enabled = !input[0].disabled;
     }
     if (evt.dataTransfer.types[0] === 'Files' && this.enabled) {
-      this.el.nativeElement.style.display = 'block';
       this.border = '2px solid';
       this.borderRadius = '4px';
       this.borderColor = '#0460a9';
     }
   }
 
-  @HostListener('window:dragend', ['$event']) public onDragEnd(evt) {
-    if (evt.dataTransfer.types[0] === 'Files' && this.enabled) {
-      evt.preventDefault();
-      evt.stopPropagation();
+  @HostListener('window:dragend', ['$event']) public onDragEnd() {
+    if (this.enabled) {
       this.background = this.el.nativeElement.background;
       this.border = this.el.nativeElement.border;
+      this.borderColor = this.el.nativeElement.borderColor;
       this.borderRadius = this.el.nativeElement.borderRadius;
     }
   }
@@ -66,6 +81,9 @@ export class NextDropzoneDirective {
       evt.stopPropagation();
       this.background = this.el.nativeElement.background;
       this.border = this.el.nativeElement.border;
+      this.borderColor = this.el.nativeElement.borderColor;
+      this.borderRadius = this.el.nativeElement.borderRadius;
+      this.dragAndDrop.onDrop();
       const files = evt.dataTransfer.files;
       if (files.length > 0) {
         Array.from(files).forEach((element: File) => {
