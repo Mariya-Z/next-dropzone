@@ -5,4 +5,4 @@ import {from} from 'rxjs';
  */
 
 export * from './lib/next-dropzone.module';
-export * from './lib/next-dropzone/next-dropzone.component';
+export * from './lib/next-dropzone-old/next-dropzone.component';

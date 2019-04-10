@@ -19,8 +19,9 @@ storiesOf('Next file upload', module)
     'Install',
     () => ({
       template: `
-      <next-dropzone>
-      </next-dropzone>
+      <button nextFileUpload>
+      select
+      </button>
     `,
       props: {},
     }),
