@@ -20,6 +20,10 @@ $borderRadius: 4px;
   left: 0;
 }
 
+:host {
+  display: block;
+}
+
 :host.disabled .uploadfile {
   opacity: 0.5;
 }
