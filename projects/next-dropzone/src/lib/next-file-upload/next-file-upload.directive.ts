@@ -10,9 +10,10 @@ export class NextFileUploadDirective {
   @Input() public multiple = true;
   @Input() public accept = '*.*';
 
-  @HostBinding('class.disabled') @Input() public disabled = false;
+  @Input() public disabled = false;
+  // @HostBinding('attr.disabled') @Input() public disabled = false;
 
-  @HostBinding('tabindex') @Input() public tabindex = 0;
+  @HostBinding('tabIndex') @Input() public tabIndex = 0;
 
   @Output() public filesSelected = new EventEmitter<File[]>();
 
@@ -24,20 +25,12 @@ export class NextFileUploadDirective {
     this.fileSelector.type = 'file';
     this.fileSelector.multiple = this.multiple;
     this.fileSelector.accept = this.accept;
-
-    this.fileSelector.onchange = (e) => {
-      console.log(e);
-    }
-    
-    // this.fileSelector.addEventListener('select', (evt) => {
-    //   console.log('change');
-    //   console.log(evt.target);
-    //   console.log(evt);
-    //   // this.handleFileInput(evt.target.files);
-
-    //   // this.handleFileInput(files);
-    // });
+    this.fileSelector.disabled = this.disabled;
+    this.fileSelector.tabIndex = this.tabIndex; // ???
     this.fileSelector.click();
+    this.fileSelector.onchange = (e) => {
+      this.handleFileInput(this.fileSelector.files);
+    };
   }
 
   public handleFileInput(files: FileList) {

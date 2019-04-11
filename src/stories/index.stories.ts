@@ -7,6 +7,7 @@ import {
   NextDropzoneDirective,
   NextDragAndDropService,
 } from '../../projects/next-dropzone/src/public_api';
+import {Component} from '@angular/core';
 
 const styles = `
   <style>
@@ -28,13 +29,21 @@ const styles = `
     padding: 10px 15px;
     margin: 5px;
     border-radius: 2px;
+    border-color: #0460a9;
     background-color: #0460a9;
     color: white;
+    cursor: pointer;
+  \}
 
+  :host.enabled .uploadfile__button \{
     cursor: pointer;
   \}
 
   .uploadfile__button:hover \{
+    background-color: #023761;
+  \}
+
+  :host.enabled .uploadfile__button:hover \{
     background-color: #023761;
   \}
 
@@ -51,19 +60,32 @@ const styles = `
     user-select: none;
   \}
 
-
-    &__button \{
-      outline: 1px dotted #000;
-      outline: -webkit-focus-ring-color auto 5px;
-    \}
-
   </style>
 `;
+
+@Component({
+  selector: 'next-file-upload',
+  template: `
+    ${styles}
+    <article class="uploadfile" nextDropzone>
+      <section class="uploadfile__content">
+        <button class="uploadfile__button" nextFileUpload (filesSelected)="onGetFiles($event)">Select</button>
+        <label class="uploadfile__button" nextFileUpload>Select</label>
+        or drop file here to upload
+      </section>
+    </article>
+  `,
+})
+export class AppComponent {
+  public onGetFiles(event): void {
+    console.log(event);
+  }
+}
 
 storiesOf('Next file upload', module)
   .addDecorator(
     moduleMetadata({
-      declarations: [NextFileUploadDirective, NextDropzoneDirective],
+      declarations: [NextFileUploadDirective, NextDropzoneDirective, AppComponent],
       providers: [NextDragAndDropService],
     }),
   )
@@ -84,13 +106,8 @@ storiesOf('Next file upload', module)
   )
   .add('both directives', () => ({
     template: `
-    ${styles}
-    <article class="uploadfile" nextDropzone>
-      <section class="uploadfile__content">
-        <label class="uploadfile__button" nextFileUpload>Select</label>
-        or drop file here to upload
-      </section>
-    </article>
+    <next-file-upload>
+    </next-file-upload>
     `,
   }))
   .add('tadIndex', () => ({
