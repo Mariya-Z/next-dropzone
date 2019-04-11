@@ -7,7 +7,7 @@ let counter = 0;
 })
 export class NextFileUploadDirective {
   @Input() public id: string = `next-dropzone-${++counter}`;
-  @Input() public multiple = false;
+  @Input() public multiple = true;
   @Input() public accept = '*.*';
 
   @HostBinding('class.disabled') @Input() public disabled = false;
@@ -18,8 +18,26 @@ export class NextFileUploadDirective {
 
   public fileToUpload: File[] = [];
 
-  @HostListener('click', ['$event']) public onClick() {
-    console.log('click');
+  public fileSelector = document.createElement('input');
+
+  @HostListener('click', ['$event']) public onClick(event) {
+    this.fileSelector.type = 'file';
+    this.fileSelector.multiple = this.multiple;
+    this.fileSelector.accept = this.accept;
+
+    this.fileSelector.onchange = (e) => {
+      console.log(e);
+    }
+    
+    // this.fileSelector.addEventListener('select', (evt) => {
+    //   console.log('change');
+    //   console.log(evt.target);
+    //   console.log(evt);
+    //   // this.handleFileInput(evt.target.files);
+
+    //   // this.handleFileInput(files);
+    // });
+    this.fileSelector.click();
   }
 
   public handleFileInput(files: FileList) {
