@@ -7,7 +7,9 @@ import {
   NextDropzoneDirective,
   NextDragAndDropService,
 } from '../../projects/next-dropzone/src/public_api';
+
 import {Component} from '@angular/core';
+
 
 const styles = `
   <style>
@@ -63,14 +65,21 @@ const styles = `
   </style>
 `;
 
+
+// [disabled]="disabled"
+
 @Component({
   selector: 'next-file-upload',
   template: `
     ${styles}
     <article class="uploadfile" nextDropzone>
       <section class="uploadfile__content">
-        <button class="uploadfile__button" nextFileUpload (filesSelected)="onGetFiles($event)">Select</button>
-        <label class="uploadfile__button" nextFileUpload>Select</label>
+        <button class="uploadfile__button" nextFileUpload (filesSelected)="onGetFiles($event)" 
+        >
+          Select
+        </button>
+        <label class="uploadfile__button" nextFileUpload 
+        >Select</label>
         or drop file here to upload
       </section>
     </article>
@@ -93,7 +102,8 @@ storiesOf('Next file upload', module)
     'Install',
     () => ({
       template: `
-      <button nextFileUpload>
+      <button nextFileUpload [disabled]="true"
+      >
       select
       </button>
       <p nextFileUpload>
