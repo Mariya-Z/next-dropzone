@@ -10,7 +10,6 @@ import {
 
 import {Component} from '@angular/core';
 
-
 const styles = `
   <style>
   :host \{
@@ -65,21 +64,13 @@ const styles = `
   </style>
 `;
 
-
-// [disabled]="disabled"
-
 @Component({
   selector: 'next-file-upload',
   template: `
     ${styles}
     <article class="uploadfile" nextDropzone>
       <section class="uploadfile__content">
-        <button class="uploadfile__button" nextFileUpload (filesSelected)="onGetFiles($event)" 
-        >
-          Select
-        </button>
-        <label class="uploadfile__button" nextFileUpload 
-        >Select</label>
+        <label class="uploadfile__button" nextFileUpload (filesSelected)="onGetFiles($event)">Select</label>
         or drop file here to upload
       </section>
     </article>
@@ -104,10 +95,21 @@ storiesOf('Next file upload', module)
       template: `
       <button nextFileUpload [disabled]="true"
       >
-      select
+      select [disabled]="true"
+      </button>
+      <button nextFileUpload [disabled]="enabled"
+      >
+      select2 [disabled]="enabled"
+      </button>
+      <button nextFileUpload
+      >
+      select2
       </button>
       <p nextFileUpload>
         nextFileUpload
+      </p>
+      <p nextFileUpload [disabled]="true">
+        nextFileUpload disabled
       </p>
     `,
       props: {},
@@ -120,12 +122,19 @@ storiesOf('Next file upload', module)
     </next-file-upload>
     `,
   }))
-  .add('tadIndex', () => ({
+  .add('tabIndex', () => ({
     template: `
-    <div nextDropzone>
-      <p>
-        tadIndex
-      </p>
-    </div>
+    <p nextFileUpload [tabIndex]='3'>
+      tabIndex 3
+    </p>
+    <p nextFileUpload [tabIndex]='4'>
+      tabIndex 4
+    </p>
+    <p nextFileUpload [tabIndex]='2'>
+      tabIndex 2
+    </p>
+    <p nextFileUpload [tabIndex]='1'>
+      tabIndex 1
+    </p>
     `,
   }));
