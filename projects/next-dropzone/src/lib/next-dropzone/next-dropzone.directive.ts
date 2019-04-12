@@ -14,12 +14,13 @@ import {NextDragAndDropService} from '../services/next-drag-and-drop.service';
   selector: '[nextDropzone]',
 })
 export class NextDropzoneDirective implements DoCheck {
+  @Input() public theme = 'NIBR';
+  @Output() public filesSelected = new EventEmitter<File[]>();
+
   @HostBinding('style.background') public background;
   @HostBinding('style.border') public border;
   @HostBinding('style.border-radius') public borderRadius;
   @HostBinding('style.border-color') public borderColor;
-
-  @Output() public filesSelected = new EventEmitter<File[]>();
 
   @ViewChild('input') public dropzone: Input;
 
