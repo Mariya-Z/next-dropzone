@@ -1,14 +1,4 @@
-import {
-  Directive,
-  HostListener,
-  HostBinding,
-  Output,
-  EventEmitter,
-  ElementRef,
-  ViewChild,
-  Input,
-  DoCheck,
-} from '@angular/core';
+import {Directive, HostListener, HostBinding, Output, EventEmitter, ElementRef, Input, DoCheck} from '@angular/core';
 import {NextDragAndDropService} from '../services/next-drag-and-drop.service';
 @Directive({
   selector: '[nextDropzone]',
@@ -22,8 +12,6 @@ export class NextDropzoneDirective implements DoCheck {
   @HostBinding('style.border-radius') public borderRadius;
   @HostBinding('style.border-color') public borderColor;
 
-  @ViewChild('input') public dropzone: Input;
-
   public fileToUpload: File[] = [];
   public enabled: boolean = true;
 
@@ -35,13 +23,17 @@ export class NextDropzoneDirective implements DoCheck {
     }
   }
 
-  @HostListener('window:dragenter', ['$event']) public onDragEnter(evt) {
+  @HostListener('window:dragover', ['$event']) public onWindowDragOver(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.onDragEnter(event);
+  }
+
+  @HostListener('window:dragenter', ['$event']) public onDragEnter(event) {
+    event.preventDefault();
+    event.stopPropagation();
     this.dragAndDrop.removeBorder = false;
-    const input = this.el.nativeElement.getElementsByClassName('input');
-    if (input.length > 0) {
-      this.enabled = !input[0].disabled;
-    }
-    if (evt.dataTransfer.types[0] === 'Files' && this.enabled) {
+    if (event.dataTransfer.types[0] === 'Files' && this.enabled) {
       this.border = '2px solid';
       this.borderRadius = '4px';
       this.borderColor = '#0460a9';
@@ -57,10 +49,8 @@ export class NextDropzoneDirective implements DoCheck {
     }
   }
 
-  @HostListener('dragover', ['$event']) public onDragOver(evt) {
-    if (evt.dataTransfer.types[0] === 'Files' && this.enabled) {
-      evt.preventDefault();
-      evt.stopPropagation();
+  @HostListener('dragover', ['$event']) public onDragOver(event) {
+    if (event.dataTransfer.types[0] === 'Files' && this.enabled) {
       this.border = '2px solid';
       this.borderRadius = '4px';
       this.background = 'rgba(82, 145, 221, 0.3)';
@@ -68,24 +58,24 @@ export class NextDropzoneDirective implements DoCheck {
     }
   }
 
-  @HostListener('dragleave', ['$event']) public onDragLeave(evt) {
-    if (evt.dataTransfer.types[0] === 'Files' && this.enabled) {
-      evt.preventDefault();
-      evt.stopPropagation();
+  @HostListener('dragleave', ['$event']) public onDragLeave(event) {
+    if (event.dataTransfer.types[0] === 'Files' && this.enabled) {
+      event.preventDefault();
+      event.stopPropagation();
       this.background = this.el.nativeElement.background;
     }
   }
 
-  @HostListener('drop', ['$event']) public onDrop(evt) {
-    if (evt.dataTransfer.types[0] === 'Files' && this.enabled) {
-      evt.preventDefault();
-      evt.stopPropagation();
+  @HostListener('drop', ['$event']) public onDrop(event) {
+    if (event.dataTransfer.types[0] === 'Files' && this.enabled) {
+      event.preventDefault();
+      event.stopPropagation();
       this.background = this.el.nativeElement.background;
       this.border = this.el.nativeElement.border;
       this.borderColor = this.el.nativeElement.borderColor;
       this.borderRadius = this.el.nativeElement.borderRadius;
       this.dragAndDrop.onDrop();
-      const files = evt.dataTransfer.files;
+      const files = event.dataTransfer.files;
       if (files.length > 0) {
         Array.from(files).forEach((element: File) => {
           this.fileToUpload.push(element);
@@ -93,5 +83,17 @@ export class NextDropzoneDirective implements DoCheck {
         this.filesSelected.emit(this.fileToUpload);
       }
     }
+  }
+
+  @HostListener('window:drop', ['$event']) public onWindowDrop(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.onDragEnd();
+  }
+
+  @HostListener('window:dragleave', ['$event']) public onWindowLeave(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.onDragEnd();
   }
 }

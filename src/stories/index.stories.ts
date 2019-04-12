@@ -61,6 +61,17 @@ const styles = `
     user-select: none;
   \}
 
+  .zone \{
+    height: 100px;
+    flex: 1;
+    background-color: aqua;
+    border: 1px solid #000;
+  \}
+
+  .a \{
+    background-color: deeppink;
+  \}
+
   </style>
 `;
 
@@ -136,5 +147,19 @@ storiesOf('Next file upload', module)
     <p nextFileUpload [tabIndex]='1'>
       tabIndex 1
     </p>
+    `,
+  }))
+  .add('dropzone', () => ({
+    template: `
+    ${styles}
+    <div nextDropzone (filesSelected)="onGetFiles($event)" class="zone">
+      dropzone
+    </div>
+
+    <p></p>
+
+    <div nextDropzone (filesSelected)="onGetFiles($event)" class="zone a">
+      dropzone
+    </div>
     `,
   }));
