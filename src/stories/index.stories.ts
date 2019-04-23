@@ -21,6 +21,7 @@ const styles = `
   \}
 
   .uploadfile \{
+    border: 2px solid transparent;
     min-width: 400px;
     min-height: 200px;
     width: 100%;
@@ -65,7 +66,7 @@ const styles = `
     height: 100px;
     flex: 1;
     background-color: aqua;
-    border: 1px solid #000;
+    border: 2px solid transparent;
   \}
 
   .a \{
@@ -74,6 +75,26 @@ const styles = `
 
   </style>
 `;
+
+export const customTheme = [
+  {
+    name: 'dragenter',
+    properties: {
+      'border': '2px solid',
+      'border-radius': '4px',
+      'border-color': 'red',
+    },
+  },
+  {
+    name: 'dragover',
+    properties: {
+      'border': '2px solid',
+      'border-radius': '4px',
+      'border-color': '#0460a9',
+      'background': 'orange',
+    },
+  },
+];
 
 @Component({
   selector: 'next-file-upload',
@@ -162,4 +183,20 @@ storiesOf('Next file upload', module)
       dropzone
     </div>
     `,
-  }));
+  }))
+  .add('custom dropzone', () => ({
+    template: `
+    ${styles}
+    <div nextDropzone (filesSelected)="onGetFiles($event)" class="zone" [theme]="customTheme">
+      custom dropzone
+    </div>
+
+    <p></p>
+
+    <div nextDropzone (filesSelected)="onGetFiles($event)" class="zone a">
+      dropzone
+    </div>
+    `,
+    props: {customTheme},
+  }),
+  );

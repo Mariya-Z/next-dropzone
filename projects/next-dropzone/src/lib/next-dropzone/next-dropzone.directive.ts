@@ -1,10 +1,29 @@
-import {Directive, HostListener, HostBinding, Output, EventEmitter, ElementRef, Input, DoCheck} from '@angular/core';
+import {
+  Directive,
+  HostListener,
+  HostBinding,
+  Output,
+  EventEmitter,
+  ElementRef,
+  Input,
+  DoCheck,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import {NextDragAndDropService} from '../services/next-drag-and-drop.service';
+import {themeOptions, THEMES} from '../theme/theme';
+
 @Directive({
   selector: '[nextDropzone]',
+  providers: [
+    {
+      provide: THEMES,
+      useValue: themeOptions,
+    },
+  ],
 })
-export class NextDropzoneDirective implements DoCheck {
-  @Input() public theme = 'NIBR';
+export class NextDropzoneDirective implements OnInit, DoCheck {
+  @Input() public theme;
   @Output() public filesSelected = new EventEmitter<File[]>();
 
   @HostBinding('style.background') public background;
@@ -15,8 +34,13 @@ export class NextDropzoneDirective implements DoCheck {
   public fileToUpload: File[] = [];
   public enabled: boolean = true;
 
-  constructor(private el: ElementRef, private dragAndDrop: NextDragAndDropService) {}
+  constructor(private el: ElementRef, private dragAndDrop: NextDragAndDropService, @Inject(THEMES) public themes) {}
 
+  public ngOnInit(): void {
+    if (this.theme) {
+      this.themes = this.theme;
+    }
+  }
   public ngDoCheck(): void {
     if (this.dragAndDrop.removeBorder) {
       this.onDragEnd();
@@ -34,9 +58,13 @@ export class NextDropzoneDirective implements DoCheck {
     event.stopPropagation();
     this.dragAndDrop.removeBorder = false;
     if (event.dataTransfer.types[0] === 'Files' && this.enabled) {
-      this.border = '2px solid';
-      this.borderRadius = '4px';
-      this.borderColor = '#0460a9';
+      this.themes.forEach((e) => {
+        if (e.name === 'dragenter') {
+          this.borderColor = e.properties['border-color'];
+          this.border = e.properties.border;
+          this.borderRadius = e.properties['border-radius'];
+        }
+      });
     }
   }
 
@@ -51,10 +79,14 @@ export class NextDropzoneDirective implements DoCheck {
 
   @HostListener('dragover', ['$event']) public onDragOver(event) {
     if (event.dataTransfer.types[0] === 'Files' && this.enabled) {
-      this.border = '2px solid';
-      this.borderRadius = '4px';
-      this.background = 'rgba(82, 145, 221, 0.3)';
-      this.borderColor = '#0460a9';
+      this.themes.forEach((e) => {
+        if (e.name === 'dragover') {
+          this.borderColor = e.properties['border-color'];
+          this.background = e.properties.background;
+          this.border = e.properties.border;
+          this.borderRadius = e.properties['border-radius'];
+        }
+      });
     }
   }
 
