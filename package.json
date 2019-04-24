@@ -8,6 +8,7 @@
     "build_lib": "ng build next-dropzone",
     "test": "ng test",
     "test_lib": "ng test next-dropzone",
+    "check_coverage": "ng test next-dropzone --watch=false --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "npm_pack": "cd dist/next-dropzone && npm pack && cd ../..",
