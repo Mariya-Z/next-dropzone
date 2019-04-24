@@ -1,29 +1,27 @@
-import {InjectionToken} from '@angular/core';
-
-export const THEMES = new InjectionToken('THEMES');
-
 export interface Theme {
-  name: string;
-  properties: any;
+  dragenter: {
+    'border': string,
+    'border-radius': string,
+    'border-color': string,
+  };
+  dragover: {
+    'border': string,
+    'border-radius': string,
+    'border-color': string,
+    'background': string,
+  };
 }
 
-export const dragenter: Theme = {
-  name: 'dragenter',
-  properties: {
+export const defaultTheme: Theme = {
+  dragenter: {
     'border': '2px solid',
     'border-radius': '4px',
     'border-color': '#0460a9',
   },
-};
-
-export const dragover: Theme = {
-  name: 'dragover',
-  properties: {
+  dragover: {
     'border': '2px solid',
     'border-radius': '4px',
     'border-color': '#0460a9',
     'background': 'rgba(82, 145, 221, 0.3)',
   },
 };
-
-export const themeOptions: Theme[] = [dragenter, dragover];

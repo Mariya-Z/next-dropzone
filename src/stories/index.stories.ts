@@ -76,25 +76,19 @@ const styles = `
   </style>
 `;
 
-export const customTheme = [
-  {
-    name: 'dragenter',
-    properties: {
-      'border': '2px solid',
-      'border-radius': '4px',
-      'border-color': 'red',
-    },
+export const customTheme = {
+  dragenter: {
+    'border': '2px solid',
+    'border-radius': '4px',
+    'border-color': 'red',
   },
-  {
-    name: 'dragover',
-    properties: {
-      'border': '2px solid',
-      'border-radius': '4px',
-      'border-color': '#0460a9',
-      'background': 'orange',
-    },
+  dragover: {
+    'border': '2px solid',
+    'border-radius': '4px',
+    'border-color': '#0460a9',
+    'background': 'orange',
   },
-];
+};
 
 @Component({
   selector: 'next-file-upload',
@@ -198,5 +192,4 @@ storiesOf('Next file upload', module)
     </div>
     `,
     props: {customTheme},
-  }),
-  );
+  }));
