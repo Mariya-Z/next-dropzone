@@ -1,13 +1,18 @@
 import {Injectable, HostBinding} from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class NextDragAndDropService {
-  public removeBorder: boolean = false;
+  private removeBorder: boolean = false;
 
-  @HostBinding('style.background') public background;
-  @HostBinding('style.border') public border;
-  @HostBinding('style.border-radius') public borderRadius;
-  @HostBinding('style.border-color') public borderColor;
+  public setRemoveBorder(val: boolean): void {
+    this.removeBorder = val;
+  }
+
+  public getRemoveBorder(): boolean {
+    return this.removeBorder;
+  }
 
   public onDrop(): void {
     this.removeBorder = true;
