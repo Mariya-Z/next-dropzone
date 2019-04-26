@@ -73,20 +73,42 @@ const styles = `
     background-color: deeppink;
   \}
 
+  .download\{
+    background-color: #0460a9;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    margin: 20px 0;
+    font-size: 16px;
+    cursor: pointer;
+  \}
+
+  .download-btn \{
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    margin: 20px 0;
+    font-size: 16px;
+    cursor: pointer;
+  \}
   </style>
 `;
 
 export const customTheme = {
   dragenter: {
-    'border': '2px solid',
+    border: '2px solid',
     'border-radius': '4px',
     'border-color': 'red',
   },
   dragover: {
-    'border': '2px solid',
+    border: '2px solid',
     'border-radius': '4px',
     'border-color': '#0460a9',
-    'background': 'orange',
+    background: 'orange',
   },
 };
 
@@ -119,15 +141,16 @@ storiesOf('Next file upload', module)
     'Install',
     () => ({
       template: `
-      <button nextFileUpload [disabled]="true"
+      ${styles}
+      <button nextFileUpload [disabled]="true" class="download-btn"
       >
       select [disabled]="true"
       </button>
-      <button nextFileUpload [disabled]="enabled"
+      <button nextFileUpload [disabled]="enabled" class="download-btn"
       >
       select2 [disabled]="enabled"
       </button>
-      <button nextFileUpload
+      <button nextFileUpload class="download-btn"
       >
       select2
       </button>
@@ -177,6 +200,11 @@ storiesOf('Next file upload', module)
       dropzone
     </div>
     `,
+    props: {
+      onGetFiles: (event) => {
+        alert('You have load ' + event[0].name);
+      },
+    },
   }))
   .add('custom dropzone', () => ({
     template: `
@@ -191,5 +219,10 @@ storiesOf('Next file upload', module)
       dropzone
     </div>
     `,
-    props: {customTheme},
+    props: {
+      customTheme,
+      onGetFiles: (event) => {
+        alert('You have load ' + event[0].name);
+      },
+    },
   }));

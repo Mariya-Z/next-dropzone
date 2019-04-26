@@ -1,11 +1,22 @@
-import {Directive, HostListener, HostBinding, Output, EventEmitter, ElementRef, Input, DoCheck} from '@angular/core';
+import {
+  Directive,
+  HostListener,
+  HostBinding,
+  Output,
+  EventEmitter,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {NextDragAndDropService} from '../services/next-drag-and-drop.service';
 import {defaultTheme, Theme} from '../theme/theme';
+import {Subscription} from 'rxjs';
 
 @Directive({
   selector: '[nextDropzone]',
 })
-export class NextDropzoneDirective implements DoCheck {
+export class NextDropzoneDirective implements OnInit, OnDestroy {
   @Input() public theme: Theme = defaultTheme;
   @Output() public filesSelected = new EventEmitter<File[]>();
 
@@ -16,24 +27,26 @@ export class NextDropzoneDirective implements DoCheck {
 
   public fileToUpload: File[] = [];
 
-  constructor(private el: ElementRef, private dragAndDrop: NextDragAndDropService) {}
+  private sub: Subscription = null;
 
-  public ngDoCheck(): void {
-    if (this.dragAndDrop.getRemoveBorder()) {
+  constructor(private el: ElementRef, private dragAndDropService: NextDragAndDropService) {}
+
+  public ngOnInit(): void {
+    this.sub = this.dragAndDropService.fileDropped.subscribe(() => {
       this.onDragEnd();
-    }
+    });
+  }
+  public ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
-  @HostListener('window:dragover', ['$event']) public onWindowDragOver(event): void {
-    event.preventDefault();
-    event.stopPropagation();
+  @HostListener('window:dragover', ['$event']) public onWindowDragOver(event: DragEvent): void {
+    this.catchEvent(event);
     this.onDragEnter(event);
   }
 
-  @HostListener('window:dragenter', ['$event']) public onDragEnter(event): void {
-    event.preventDefault();
-    event.stopPropagation();
-    this.dragAndDrop.setRemoveBorder(false);
+  @HostListener('window:dragenter', ['$event']) public onDragEnter(event: DragEvent): void {
+    this.catchEvent(event);
     if (event.dataTransfer.types[0] === 'Files') {
       this.borderColor = this.theme.dragenter['border-color'];
       this.border = this.theme.dragenter.border;
@@ -48,7 +61,7 @@ export class NextDropzoneDirective implements DoCheck {
     this.borderRadius = this.el.nativeElement.borderRadius;
   }
 
-  @HostListener('dragover', ['$event']) public onDragOver(event): void {
+  @HostListener('dragover', ['$event']) public onDragOver(event: DragEvent): void {
     if (event.dataTransfer.types[0] === 'Files') {
       this.borderColor = this.theme.dragover['border-color'];
       this.background = this.theme.dragover.background;
@@ -57,23 +70,21 @@ export class NextDropzoneDirective implements DoCheck {
     }
   }
 
-  @HostListener('dragleave', ['$event']) public onDragLeave(event): void {
+  @HostListener('dragleave', ['$event']) public onDragLeave(event: DragEvent): void {
     if (event.dataTransfer.types[0] === 'Files') {
-      event.preventDefault();
-      event.stopPropagation();
+      this.catchEvent(event);
       this.background = this.el.nativeElement.background;
     }
   }
 
-  @HostListener('drop', ['$event']) public onDrop(event): void {
+  @HostListener('drop', ['$event']) public onDrop(event: DragEvent): void {
     if (event.dataTransfer.types[0] === 'Files') {
-      event.preventDefault();
-      event.stopPropagation();
+      this.catchEvent(event);
       this.background = this.el.nativeElement.background;
       this.border = this.el.nativeElement.border;
       this.borderColor = this.el.nativeElement.borderColor;
       this.borderRadius = this.el.nativeElement.borderRadius;
-      this.dragAndDrop.onDrop();
+      this.dragAndDropService.onDrop();
       const files = event.dataTransfer.files;
       if (files.length > 0) {
         Array.from(files).forEach((element: File) => {
@@ -84,15 +95,18 @@ export class NextDropzoneDirective implements DoCheck {
     }
   }
 
-  @HostListener('window:drop', ['$event']) public onWindowDrop(event): void {
-    event.preventDefault();
-    event.stopPropagation();
+  @HostListener('window:drop', ['$event']) public onWindowDrop(event: DragEvent): void {
+    this.catchEvent(event);
     this.onDragEnd();
   }
 
-  @HostListener('window:dragleave', ['$event']) public onWindowLeave(event): void {
+  @HostListener('window:dragleave', ['$event']) public onWindowLeave(event: DragEvent): void {
+    this.catchEvent(event);
+    this.onDragEnd();
+  }
+
+  private catchEvent(event: DragEvent): void {
     event.preventDefault();
     event.stopPropagation();
-    this.onDragEnd();
   }
 }
