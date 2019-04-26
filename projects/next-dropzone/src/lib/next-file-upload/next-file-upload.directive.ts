@@ -10,7 +10,7 @@ export class NextFileUploadDirective {
   @Input() public multiple = true;
   @Input() public accept = '*.*';
 
-  @HostBinding('attr.disabled') @Input() public disabled;
+  @HostBinding('attr.disabled') @Input() public disabled: boolean;
   @HostBinding('tabIndex') @Input() public tabIndex = 0;
 
   @Output() public filesSelected = new EventEmitter<File[]>();
@@ -18,7 +18,7 @@ export class NextFileUploadDirective {
   public fileToUpload: File[] = [];
   public fileSelector = document.createElement('input');
 
-  @HostListener('click', ['$event']) public onClick() {
+  @HostListener('click', ['$event']) public onClick(): void {
     this.fileSelector.type = 'file';
     this.fileSelector.multiple = this.multiple;
     this.fileSelector.accept = this.accept;
@@ -29,7 +29,7 @@ export class NextFileUploadDirective {
     };
   }
 
-  public handleFileInput(files: FileList) {
+  public handleFileInput(files: FileList): void {
     Array.from(files).forEach((element) => {
       this.fileToUpload.push(element);
     });

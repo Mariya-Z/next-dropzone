@@ -1,15 +1,18 @@
-import {Injectable, HostBinding} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
+import {Subject, Observable} from 'rxjs';
 
-@Injectable()
-export class NextDragAndDropService {
-  public removeBorder: boolean = false;
+@Injectable({
+  providedIn: 'root',
+})
+export class NextDragAndDropService implements OnInit {
+  public dropped: Subject<void> = new Subject<void>();
+  public fileDropped: Observable<void> = this.dropped.asObservable();
 
-  @HostBinding('style.background') public background;
-  @HostBinding('style.border') public border;
-  @HostBinding('style.border-radius') public borderRadius;
-  @HostBinding('style.border-color') public borderColor;
+  public ngOnInit(): void {
+    this.dropped.next();
+  }
 
   public onDrop(): void {
-    this.removeBorder = true;
+    this.dropped.next();
   }
 }
