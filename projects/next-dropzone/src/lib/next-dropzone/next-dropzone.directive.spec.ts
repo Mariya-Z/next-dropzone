@@ -155,15 +155,29 @@ describe('NextDropzoneDirective', () => {
   it('should listen drop', () => {
     const mockFile1 = new File(['file1'], 'filename1.txt', {type: 'text/plain', lastModified: new Date().getTime()});
     const directiveInstance = directiveEl.injector.get(NextDropzoneDirective);
+    fixture.detectChanges();
     const event: any = new Event('drop');
     event.dataTransfer = {
       types: ['Files'],
       files: [mockFile1],
     };
-    directiveEl.triggerEventHandler('drop', event);
-
+    directiveEl.triggerEventHandler('drop', event as DragEvent);
     fixture.detectChanges();
     expect(directiveInstance.fileToUpload).toEqual([mockFile1]);
     directiveInstance.filesSelected.subscribe((file) => expect(file).toEqual(mockFile1));
   });
+
+  it('should change styles because of window dragover', () => {
+    const directiveInstance = directiveEl.injector.get(NextDropzoneDirective);
+    const event: any = new Event('dragover');
+    event.dataTransfer = {
+      types: ['Files'],
+    };
+    window.dispatchEvent(event as DragEvent);
+    fixture.detectChanges();
+    expect(directiveInstance.borderColor).toBe(directiveInstance.theme.dragover['border-color']);
+    expect(directiveInstance.border).toBe(directiveInstance.theme.dragover.border);
+    expect(directiveInstance.borderRadius).toBe(directiveInstance.theme.dragover['border-radius']);
+  });
+
 });
