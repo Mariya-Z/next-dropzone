@@ -5,10 +5,16 @@ import {By} from '@angular/platform-browser';
 
 @Component({
   template: `
-    <p nextDropzone>text</p>
+    <p class="zone" nextDropzone>text</p>
   `,
   styles: [
     `
+      .zone {
+        background: white;
+        border: 1px dashed;
+        border-сolor: #9d9d9d;
+        border-radius: 1px;
+      }
       p {
         background: white;
         border: 1px dashed;
@@ -46,7 +52,7 @@ describe('NextDropzoneDirective', () => {
     expect(directiveEl).not.toBeNull();
   });
 
-  it('should listen dragenter', () => {
+  xit('should listen dragenter', () => {
     const directiveInstance = directiveEl.injector.get(NextDropzoneDirective);
     const event: any = new Event('dragenter');
     event.dataTransfer = {
@@ -103,5 +109,61 @@ describe('NextDropzoneDirective', () => {
     expect(directiveInstance.borderColor).toBe(directiveInstance.theme.dragover['border-color']);
     expect(directiveInstance.border).toBe(directiveInstance.theme.dragover.border);
     expect(directiveInstance.borderRadius).toBe(directiveInstance.theme.dragover['border-radius']);
+  });
+
+  xit('should listen dragleave', () => {
+    const directiveInstance = directiveEl.injector.get(NextDropzoneDirective);
+    let eventDragover: any = new Event('dragover');
+    eventDragover.dataTransfer = {
+      types: ['Files'],
+    };
+    directiveEl.triggerEventHandler('dragover', eventDragover as DragEvent);
+    // directiveInstance.onDragOver(eventDragover as DragEvent);
+    console.log(eventDragover);
+
+    // console.log(componentEl.styles);
+    // console.log(componentEl.styles.background);
+
+    fixture.detectChanges();
+
+    fixture.whenStable().then(() => {
+      // console.log(directiveInstance.background);
+      // console.log(componentEl.styles.background);
+
+      const eventDragleave: any = new Event('dragleave');
+      eventDragleave.dataTransfer = {
+        types: ['Files'],
+      };
+      eventDragover = eventDragleave;
+      directiveEl.triggerEventHandler('dragleave', eventDragover as DragEvent);
+      // directiveEl.triggerEventHandler('dragleave', eventDragleave as DragEvent);
+
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        // console.log(directiveInstance.background);
+        // console.log(componentEl.styles.background);
+
+        // ???
+        fixture.detectChanges();
+        console.log(directiveInstance.background);
+        console.log(componentEl.styles.background);
+        expect(directiveInstance.background).toBe(componentEl.styles.background);
+      });
+    });
+  });
+
+  it('should listen drop', () => {
+    const mockFile1 = new File(['file1'], 'filename1.txt', {type: 'text/plain', lastModified: new Date().getTime()});
+    const directiveInstance = directiveEl.injector.get(NextDropzoneDirective);
+    const event: any = new Event('drop');
+    event.dataTransfer = {
+      types: ['Files'],
+      files: [mockFile1],
+    };
+    directiveEl.triggerEventHandler('drop', event);
+
+    fixture.detectChanges();
+    expect(directiveInstance.fileToUpload).toEqual([mockFile1]);
+    directiveInstance.filesSelected.subscribe((file) => expect(file).toEqual(mockFile1));
   });
 });
