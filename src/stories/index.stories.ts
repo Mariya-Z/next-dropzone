@@ -126,7 +126,7 @@ export const customTheme = {
 })
 export class AppComponent {
   public onGetFiles(event): void {
-    console.log(event);
+    alert(event);
   }
 }
 
