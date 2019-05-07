@@ -180,4 +180,18 @@ describe('NextDropzoneDirective', () => {
     expect(directiveInstance.borderRadius).toBe(directiveInstance.theme.dragover['border-radius']);
   });
 
+  it('should react on window drop', () => {
+    const directiveInstance = directiveEl.injector.get(NextDropzoneDirective);
+    const onDragendSpy = spyOn(directiveInstance, 'onDragEnd');
+    window.dispatchEvent(new DragEvent('drop'));
+    expect(onDragendSpy).toHaveBeenCalled();
+  });
+
+  it('should react on window dragleave', () => {
+    const directiveInstance = directiveEl.injector.get(NextDropzoneDirective);
+    const onDragendSpy = spyOn(directiveInstance, 'onDragEnd');
+    window.dispatchEvent(new DragEvent('dragleave'));
+    expect(onDragendSpy).toHaveBeenCalled();
+  });
+
 });
