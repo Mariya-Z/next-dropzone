@@ -5,24 +5,10 @@ import {By} from '@angular/platform-browser';
 
 @Component({
   template: `
-    <p class="zone" nextDropzone>text</p>
+    <p nextDropzone>
+      text
+    </p>
   `,
-  styles: [
-    `
-      .zone {
-        background: white;
-        border: 1px dashed;
-        border-сolor: #9d9d9d;
-        border-radius: 1px;
-      }
-      p {
-        background: white;
-        border: 1px dashed;
-        border-сolor: #9d9d9d;
-        border-radius: 1px;
-      }
-    `,
-  ],
 })
 export class TestComponent {}
 
@@ -52,43 +38,20 @@ describe('NextDropzoneDirective', () => {
     expect(directiveEl).not.toBeNull();
   });
 
-  xit('should listen dragenter', () => {
-    const directiveInstance = directiveEl.injector.get(NextDropzoneDirective);
-    const event: any = new Event('dragenter');
-    event.dataTransfer = {
-      types: ['Files'],
-    };
-    componentEl.triggerEventHandler('window:dragenter', event as DragEvent);
-
-    fixture.detectChanges();
-    console.log(directiveInstance.background);
-    console.log(directiveInstance.theme.dragover.background);
-    // expect(directiveInstance.background).toBe(directiveInstance.theme.dragover.background);
-    expect(directiveInstance.borderColor).toBe(directiveInstance.theme.dragover['border-color']);
-    expect(directiveInstance.border).toBe(directiveInstance.theme.dragover.border);
-    expect(directiveInstance.borderRadius).toBe(directiveInstance.theme.dragover['border-radius']);
-  });
-
   it('should listen window:dragend', () => {
-    // work incorrect !!!
+    componentEl.nativeElement.background = '#fff';
+    componentEl.nativeElement.border = '1px dashed';
+    componentEl.nativeElement.borderColor = '#9d9d9d';
+    componentEl.nativeElement.borderRadius = '1px';
     const directiveInstance = directiveEl.injector.get(NextDropzoneDirective);
-
     const eventDragover: any = new Event('dragover');
     eventDragover.dataTransfer = {
       types: ['Files'],
     };
     componentEl.triggerEventHandler('dragover', eventDragover as DragEvent);
-
     fixture.detectChanges();
-    const eventDragend: any = new Event('window:dragend');
-    eventDragend.dataTransfer = {
-      types: ['Files'],
-    };
-    componentEl.triggerEventHandler('window:dragend', eventDragend as DragEvent);
-
+    window.dispatchEvent(new DragEvent('dragend'));
     fixture.detectChanges();
-    // console.log(directiveInstance.background);
-    // console.log(componentEl.styles.background);
     expect(directiveInstance.background).toEqual(componentEl.styles.background);
     expect(directiveInstance.borderColor).toEqual(componentEl.styles['border-color']);
     expect(directiveInstance.border).toEqual(componentEl.styles.border);
@@ -102,54 +65,29 @@ describe('NextDropzoneDirective', () => {
       types: ['Files'],
     };
     componentEl.triggerEventHandler('dragover', event as DragEvent);
-
     fixture.detectChanges();
-
     expect(directiveInstance.background).toBe(directiveInstance.theme.dragover.background);
     expect(directiveInstance.borderColor).toBe(directiveInstance.theme.dragover['border-color']);
     expect(directiveInstance.border).toBe(directiveInstance.theme.dragover.border);
     expect(directiveInstance.borderRadius).toBe(directiveInstance.theme.dragover['border-radius']);
   });
 
-  xit('should listen dragleave', () => {
+  it('should listen dragleave', () => {
+    componentEl.nativeElement.background = '#fff';
     const directiveInstance = directiveEl.injector.get(NextDropzoneDirective);
-    let eventDragover: any = new Event('dragover');
+    const eventDragover: any = new Event('dragover');
     eventDragover.dataTransfer = {
       types: ['Files'],
     };
     directiveEl.triggerEventHandler('dragover', eventDragover as DragEvent);
-    // directiveInstance.onDragOver(eventDragover as DragEvent);
-    console.log(eventDragover);
-
-    // console.log(componentEl.styles);
-    // console.log(componentEl.styles.background);
-
     fixture.detectChanges();
-
-    fixture.whenStable().then(() => {
-      // console.log(directiveInstance.background);
-      // console.log(componentEl.styles.background);
-
-      const eventDragleave: any = new Event('dragleave');
-      eventDragleave.dataTransfer = {
-        types: ['Files'],
-      };
-      eventDragover = eventDragleave;
-      directiveEl.triggerEventHandler('dragleave', eventDragover as DragEvent);
-      // directiveEl.triggerEventHandler('dragleave', eventDragleave as DragEvent);
-
-      fixture.detectChanges();
-      fixture.whenStable().then(() => {
-        // console.log(directiveInstance.background);
-        // console.log(componentEl.styles.background);
-
-        // ???
-        fixture.detectChanges();
-        console.log(directiveInstance.background);
-        console.log(componentEl.styles.background);
-        expect(directiveInstance.background).toBe(componentEl.styles.background);
-      });
-    });
+    const eventDragleave: any = new Event('dragleave');
+    eventDragleave.dataTransfer = {
+      types: ['Files'],
+    };
+    directiveEl.triggerEventHandler('dragleave', eventDragleave as DragEvent);
+    fixture.detectChanges();
+    expect(directiveInstance.background).toBe(componentEl.styles.background);
   });
 
   it('should listen drop', () => {
@@ -193,5 +131,4 @@ describe('NextDropzoneDirective', () => {
     window.dispatchEvent(new DragEvent('dragleave'));
     expect(onDragendSpy).toHaveBeenCalled();
   });
-
 });
