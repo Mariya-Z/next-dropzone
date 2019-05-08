@@ -1,6 +1,8 @@
 import {storiesOf, moduleMetadata} from '@storybook/angular';
 
 import defaultText from './default.md';
+import dropzoneText from './dropzone.md';
+import fileuploadText from './fileupload.md';
 
 import {
   NextFileUploadDirective,
@@ -73,27 +75,26 @@ const styles = `
     background-color: deeppink;
   \}
 
-  .download\{
+  .download-btn \{
     background-color: #0460a9;
     border: none;
     color: white;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
-    display: block;
+    display: inline-block;
     margin: 20px 0;
     font-size: 16px;
     cursor: pointer;
   \}
 
-  .download-btn \{
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    margin: 20px 0;
-    font-size: 16px;
-    cursor: pointer;
+  .download-btn\:hover {
+    background-color: #0A4F8F;
+  }
+
+  .download-btn\:disabled \{
+    opacity: 0.7;
+    cursor: default;
   \}
   </style>
 `;
@@ -141,19 +142,40 @@ storiesOf('Next file upload', module)
     'Install',
     () => ({
       template: `
+      <next-file-upload>
+      </next-file-upload>
+      `,
+    }),
+    {notes: defaultText},
+  )
+  .add(
+    'Directive nextFileUpload',
+    () => ({
+      template: `
       ${styles}
-      <button nextFileUpload [disabled]="true" class="download-btn"
-      >
-      select [disabled]="true"
+
+      <div>
+        <button nextFileUpload class="download-btn" >
+          select
+        </button>
+        <span>Using nextFileUpload without any input</span>
+      </div>
+
+      <div>
+        <button nextFileUpload [disabled]="true" class="download-btn">
+          select
+        </button>
+        <span>Add [disabled]="true"</span>
+      </div>
+
+      <div>
+      <button nextFileUpload [disabled]="enabled" class="download-btn">
+        select2 [disabled]="enabled"
       </button>
-      <button nextFileUpload [disabled]="enabled" class="download-btn"
-      >
-      select2 [disabled]="enabled"
-      </button>
-      <button nextFileUpload class="download-btn"
-      >
-      select2
-      </button>
+      <span> dis</span>
+      </div>
+
+
       <p nextFileUpload>
         nextFileUpload
       </p>
@@ -163,7 +185,7 @@ storiesOf('Next file upload', module)
     `,
       props: {},
     }),
-    {notes: defaultText},
+    {notes: fileuploadText},
   )
   .add('both directives', () => ({
     template: `
