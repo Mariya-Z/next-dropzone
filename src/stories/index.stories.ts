@@ -2,7 +2,11 @@ import {storiesOf, moduleMetadata} from '@storybook/angular';
 
 import defaultText from './default.md';
 import dropzoneText from './dropzone.md';
+import themeText from './theme.md';
 import fileuploadText from './fileupload.md';
+import multiText from './multi.md';
+import acceptText from './accept.md';
+import tabindexText from './tabindex.md';
 
 import {
   NextFileUploadDirective,
@@ -69,9 +73,13 @@ const styles = `
     flex: 1;
     background-color: aqua;
     border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
   \}
 
-  .a \{
+  .highlight \{
     background-color: deeppink;
   \}
 
@@ -83,18 +91,28 @@ const styles = `
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    margin: 20px 0;
+    margin: 10px 5px;
     font-size: 16px;
     cursor: pointer;
   \}
 
-  .download-btn\:hover {
-    background-color: #0A4F8F;
+  .download-btn\:focus \{
+    outline: #D13A32 solid 2px;
+  \}
+
+  .download-btn\:hover\:enabled \{
+    background-color: #0a4f8f;
   }
 
   .download-btn\:disabled \{
     opacity: 0.7;
     cursor: default;
+  \}
+
+  .fileupload \{
+    margin: 10px 5px;
+    background-color: #e3e3e3;
+    cursor: pointer;
   \}
   </style>
 `;
@@ -145,106 +163,198 @@ storiesOf('Next file upload', module)
       <next-file-upload>
       </next-file-upload>
       `,
+      props: {
+        onGetFiles: (event) => {
+          alert('You have load ' + event.map((el) => el.name));
+        },
+      },
     }),
     {notes: defaultText},
   )
   .add(
-    'Directive nextFileUpload',
+    'nextFileUpload disabled/enabled',
     () => ({
       template: `
       ${styles}
-
+      <h2>Buttons with nextFileUpload directive</h2>
       <div>
-        <button nextFileUpload class="download-btn" >
+        <button nextFileUpload class="download-btn" (filesSelected)="onGetFiles($event)">
           select
         </button>
         <span>Using nextFileUpload without any input</span>
       </div>
-
       <div>
-        <button nextFileUpload [disabled]="true" class="download-btn">
+        <button nextFileUpload [disabled]="true" class="download-btn" (filesSelected)="onGetFiles($event)">
           select
         </button>
-        <span>Add [disabled]="true"</span>
+        <span>Add input property [disabled]="true"</span>
       </div>
-
       <div>
-      <button nextFileUpload [disabled]="enabled" class="download-btn">
-        select2 [disabled]="enabled"
-      </button>
-      <span> dis</span>
+        <button nextFileUpload [disabled]="enabled" class="download-btn" (filesSelected)="onGetFiles($event)">
+          select
+        </button>
+        <span>Add input property [disabled]="enabled"</span>
       </div>
 
-
-      <p nextFileUpload>
-        nextFileUpload
+      <h2>Paragraphs with nextFileUpload directive</h2>
+      <p nextFileUpload class="fileupload" (filesSelected)="onGetFiles($event)">
+        Click to select file
       </p>
-      <p nextFileUpload [disabled]="true">
-        nextFileUpload disabled
+      <p nextFileUpload [disabled]="true" class="fileupload" (filesSelected)="onGetFiles($event)">
+        You can't select files because [disabled]="true"
+      </p>
+      <p nextFileUpload [disabled]="enabled" class="fileupload" (filesSelected)="onGetFiles($event)">
+        You can't select files because [disabled]="enabled"
       </p>
     `,
-      props: {},
+      props: {
+        onGetFiles: (event) => {
+          alert('You have load ' + event.map((el) => el.name));
+        },
+      },
     }),
     {notes: fileuploadText},
   )
-  .add('both directives', () => ({
-    template: `
-    <next-file-upload>
-    </next-file-upload>
+  .add(
+    'nextFileUpload multiple',
+    () => ({
+      template: `
+      ${styles}
+      <h2>Buttons with nextFileUpload multiple</h2>
+      <div>
+        <button nextFileUpload class="download-btn" (filesSelected)="onGetFiles($event)">
+          select
+        </button>
+        <span>Using nextFileUpload without any input</span>
+      </div>
+      <div>
+        <button nextFileUpload class="download-btn" (filesSelected)="onGetFiles($event)" [multiple]="false">
+          select
+        </button>
+        <span>Using nextFileUpload with [multiple]="false"</span>
+      </div>
+      <div>
+        <button nextFileUpload class="download-btn" (filesSelected)="onGetFiles($event)" [multiple]="true">
+          select
+        </button>
+        <span>Using nextFileUpload with [multiple]="true"</span>
+      </div>
     `,
-  }))
-  .add('tabIndex', () => ({
-    template: `
-    <p nextFileUpload [tabIndex]='3'>
-      tabIndex 3
-    </p>
-    <p nextFileUpload [tabIndex]='4'>
-      tabIndex 4
-    </p>
-    <p nextFileUpload [tabIndex]='2'>
-      tabIndex 2
-    </p>
-    <p nextFileUpload [tabIndex]='1'>
-      tabIndex 1
-    </p>
-    `,
-  }))
-  .add('dropzone', () => ({
-    template: `
-    ${styles}
-    <div nextDropzone (filesSelected)="onGetFiles($event)" class="zone">
-      dropzone
-    </div>
-
-    <p></p>
-
-    <div nextDropzone (filesSelected)="onGetFiles($event)" class="zone a">
-      dropzone
-    </div>
-    `,
-    props: {
-      onGetFiles: (event) => {
-        alert('You have load ' + event[0].name);
+      props: {
+        onGetFiles: (event) => {
+          alert('You have load ' + event.map((el) => el.name));
+        },
       },
-    },
-  }))
-  .add('custom dropzone', () => ({
-    template: `
+    }),
+    {notes: multiText},
+  )
+  .add(
+    'nextFileUpload accept',
+    () => ({
+      template: `
+      ${styles}
+      <h2>Buttons with nextFileUpload multiple</h2>
+      <div>
+        <button nextFileUpload class="download-btn" (filesSelected)="onGetFiles($event)">
+          select
+        </button>
+        <span>Using nextFileUpload without any input</span>
+      </div>
+      <div>
+        <button nextFileUpload class="download-btn" (filesSelected)="onGetFiles($event)" [accept]="'.txt'">
+          select
+        </button>
+        <span>Using nextFileUpload with [accept]="'.txt'"</span>
+      </div>
+      <div>
+        <button nextFileUpload class="download-btn" (filesSelected)="onGetFiles($event)" [accept]="'.docx'">
+          select
+        </button>
+        <span>Using nextFileUpload with [accept]="'.docx'"</span>
+      </div>
+    `,
+      props: {
+        onGetFiles: (event) => {
+          alert('You have load ' + event.map((el) => el.name));
+        },
+      },
+    }),
+    {notes: acceptText},
+  )
+  .add(
+    'nextFileUpload tabIndex',
+    () => ({
+      template: `
+    ${styles}
+    <div>
+      <button nextFileUpload class="download-btn" (filesSelected)="onGetFiles($event)" [tabIndex]='1'>
+        tabIndex 1
+      </button>
+    </div>
+    <div>
+      <button nextFileUpload class="download-btn" (filesSelected)="onGetFiles($event)" [tabIndex]='4'>
+        tabIndex 4
+      </button>
+    </div>
+    <div>
+      <button nextFileUpload class="download-btn" (filesSelected)="onGetFiles($event)" [tabIndex]='2'>
+        tabIndex 2
+      </button>
+    </div>
+    <div>
+      <button nextFileUpload class="download-btn" (filesSelected)="onGetFiles($event)" [tabIndex]='3'>
+        tabIndex 3
+      </button>
+    </div>
+    `,
+      props: {
+        onGetFiles: (event) => {
+          alert('You have load ' + event.map((el) => el.name));
+        },
+      },
+    }),
+    {notes: tabindexText},
+  )
+  .add(
+    'nextDropzone',
+    () => ({
+      template: `
+      ${styles}
+      <div nextDropzone (filesSelected)="onGetFiles($event)" class="zone">
+        <p class="title">Drag files here</p>
+      </div>
+      <br/>
+      <div nextDropzone (filesSelected)="onGetFiles($event)" class="zone highlight">
+        Drag files here
+      </div>
+    `,
+      props: {
+        onGetFiles: (event) => {
+          alert('You have load ' + event.map((el) => el.name));
+        },
+      },
+    }),
+    {notes: dropzoneText},
+  )
+  .add(
+    'nextDropzone theme',
+    () => ({
+      template: `
     ${styles}
     <div nextDropzone (filesSelected)="onGetFiles($event)" class="zone" [theme]="customTheme">
-      custom dropzone
+     dropzone with custom theme
     </div>
-
-    <p></p>
-
-    <div nextDropzone (filesSelected)="onGetFiles($event)" class="zone a">
+    <br/>
+    <div nextDropzone (filesSelected)="onGetFiles($event)" class="zone highlight">
       dropzone
     </div>
     `,
-    props: {
-      customTheme,
-      onGetFiles: (event) => {
-        alert('You have load ' + event[0].name);
+      props: {
+        customTheme,
+        onGetFiles: (event) => {
+          alert('You have load ' + event.map((el) => el.name));
+        },
       },
-    },
-  }));
+    }),
+    {notes: themeText},
+  );
